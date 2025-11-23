@@ -10,6 +10,19 @@ let manualImageSelected = false;
 let missionStartTime = null;
 let missionTimerInterval = null;
 
+// Theme management
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+}
+
 // DOM elements
 const droneImage = document.getElementById('drone-image');
 const imageTimestamp = document.getElementById('image-timestamp');
@@ -51,6 +64,7 @@ function updateMissionTime() {
 // ============================================================
 
 function init() {
+    initTheme();
     setupEventListeners();
     connectWebSocket();
     fetchInitialData();
@@ -63,6 +77,11 @@ function init() {
 function setupEventListeners() {
     clearLogBtn.addEventListener('click', clearLogs);
     clearGallery.addEventListener('click', clearGal);
+    
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
 
     window.addEventListener('resize', () => {
         if (droneImage.src && droneImage.src.includes('/images/')) {

@@ -6,6 +6,30 @@
     --danger-color: #e74c3c;
     --light-gray: #ecf0f1;
     --dark-gray: #7f8c8d;
+    
+    /* Light theme (default) */
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+    --panel-bg: white;
+    --border-color: #ecf0f1;
+    --header-border: #2c3e50;
+    --table-hover: #f9f9f9;
+    --log-bg: #1e1e1e;
+    --log-text: #e0e0e0;
+}
+
+/* Dark theme */
+body.dark-theme {
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --panel-bg: #2d2d2d;
+    --border-color: #444;
+    --header-border: #555;
+    --table-hover: #3a3a3a;
+    --log-bg: #0d0d0d;
+    --log-text: #e0e0e0;
+    --primary-color: #4a5f7f;
+    --light-gray: #444;
 }
 
 * {
@@ -17,9 +41,10 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     padding: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -33,7 +58,7 @@ header {
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--header-border);
 }
 .indicator {
     display: inline-block;
@@ -70,23 +95,39 @@ header {
 .status-panel {
     grid-column: 1;
     grid-row: 1;
+    background: var(--panel-bg);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
 }
 
 .image-panel {
     grid-column: 2;
     grid-row: 1;
+    background: var(--panel-bg);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
 }
 
 .log-panel {
     grid-column: 1 / span 2;
     grid-row: 2;
-}
-
-.panel {
-    background: white;
+    background: var(--panel-bg);
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.panel {
+    background: var(--panel-bg);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
 }
 
 h2 {
@@ -105,7 +146,7 @@ table {
 th, td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid var(--border-color);
 }
 
 th {
@@ -114,7 +155,7 @@ th {
 }
 
 tr:hover {
-    background-color: #f9f9f9;
+    background-color: var(--table-hover);
 }
 
 .image-container {
@@ -124,7 +165,7 @@ tr:hover {
 #drone-image {
     max-width: 100%;
     max-height: 400px;
-    border: 1px solid var(--light-gray);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
 }
 
@@ -133,6 +174,16 @@ tr:hover {
     font-size: 0.9em;
     color: var(--dark-gray);
 }
+
+.camera-view-container {
+    background: var(--panel-bg);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
 .gallery-container {
     display: flex;
     flex-wrap: wrap;
@@ -145,7 +196,7 @@ tr:hover {
     width: 100px;
     height: 100px;
     object-fit: cover;
-    border: 2px solid var(--light-gray);
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     cursor: pointer;
     transition: border-color 0.3s;
@@ -186,8 +237,8 @@ button:hover {
 .log-container {
     height: 300px;
     overflow-y: auto;
-    background-color: #1e1e1e;
-    color: #e0e0e0;
+    background-color: var(--log-bg);
+    color: var(--log-text);
     padding: 10px;
     border-radius: 4px;
     font-family: 'Courier New', monospace;
@@ -278,4 +329,36 @@ button:hover {
 }
 .error-display.hidden {
     display: none;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    z-index: 1000;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+body.dark-theme .theme-toggle {
+    background-color: #f39c12;
 }

@@ -18,6 +18,29 @@ const missionLog = document.getElementById('mission-log');
 const clearGallery = document.getElementById('clear-gallery');
 const clearLogBtn = document.getElementById('clear-log');
 
+// =================== THEME TOGGLE ==========================
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        updateThemeIcon(true);
+    }
+}
+
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-theme');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateThemeIcon(isDark);
+}
+
+function updateThemeIcon(isDark) {
+    const themeIcon = document.getElementById('theme-icon');
+    if (themeIcon) {
+        themeIcon.textContent = isDark ? '☀️' : '🌙';
+    }
+}
+// ============================================================
+
 // =================== ERROR DISPLAY ==========================
 function showError(message, duration = 5000) {
     const errorBox = document.getElementById('error-display');
@@ -51,6 +74,7 @@ function updateMissionTime() {
 // ============================================================
 
 function init() {
+    initTheme();
     setupEventListeners();
     connectWebSocket();
     fetchInitialData();
@@ -63,6 +87,11 @@ function init() {
 function setupEventListeners() {
     clearLogBtn.addEventListener('click', clearLogs);
     clearGallery.addEventListener('click', clearGal);
+    
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
 
     window.addEventListener('resize', () => {
         if (droneImage.src && droneImage.src.includes('/images/')) {

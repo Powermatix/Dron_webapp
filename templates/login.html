@@ -199,7 +199,10 @@
         initTheme();
         
         // Add event listener to theme toggle button
-        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+        }
     </script>
 </body>
 </html>

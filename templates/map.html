@@ -8,17 +8,30 @@
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <style>
-    #map { height: 60vh; width: 100%; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 15px; }
+    :root {
+        --map-border: #ccc;
+        --table-border: #eee;
+        --table-header-bg: #3498db;
+    }
+
+    [data-theme="dark"] {
+        --map-border: #424242;
+        --table-border: #424242;
+        --table-header-bg: #4da6db;
+    }
+
+    #map { height: 60vh; width: 100%; border: 1px solid var(--map-border); border-radius: 6px; margin-bottom: 15px; }
     .toolbar { margin: 10px 0 20px; display: flex; gap: 10px; flex-wrap: wrap; }
     .toolbar button.secondary { background: var(--primary-color); }
 
     /* Mission Table Styles */
     .mission-container {
         overflow-x: auto;
-        background: white;
+        background: var(--panel-bg);
         border-radius: 6px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         padding: 10px;
+        transition: background-color 0.3s ease;
     }
     table.mission-table {
         width: 100%;
@@ -26,20 +39,24 @@
         font-size: 0.9rem;
     }
     table.mission-table th, table.mission-table td {
-        border: 1px solid #eee;
+        border: 1px solid var(--table-border);
         padding: 8px;
         text-align: center;
+        color: var(--text-color);
     }
     table.mission-table th {
-        background-color: #3498db;
+        background-color: var(--table-header-bg);
         font-weight: 600;
+        color: white;
     }
     table.mission-table input, table.mission-table select {
         width: 100%;
         padding: 4px;
-        border: 1px solid #ddd;
+        border: 1px solid var(--border-color);
         border-radius: 3px;
         box-sizing: border-box;
+        background-color: var(--panel-bg);
+        color: var(--text-color);
     }
     .btn-delete {
         background-color: #e74c3c;
@@ -67,6 +84,7 @@
       <nav>
         <a href="/" style="color: white; text-decoration: none; background-color: #074761; padding: 8px 15px; border-radius: 4px;">Dashboard</a>
           <a href="/map" style="color: white; text-decoration: none; background-color: #075512; padding: 8px 15px; border-radius: 4px;">Mapa misji</a>
+        <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light theme">🌓</button>
         <a href="/logout" style="color: white; text-decoration: none; background-color: #e74c3c; padding: 8px 15px; border-radius: 4px;">Logout</a>
       </nav>
     </header>
@@ -106,6 +124,28 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
+    // Theme management
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+
+    // Initialize theme on load
+    initTheme();
+    
+    // Add event listener to theme toggle button
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+
     // Inicjalizacja mapy
     const map = L.map('map').setView([52.2297, 21.0122], 13); // Warszawa domyślnie
 

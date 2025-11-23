@@ -8,3 +8,7 @@
 /dataSources.local.xml
 kluczapi.txt
 __pycache__
+# Runtime data files
+data/mission.log
+data/secret.key
+data/images/
